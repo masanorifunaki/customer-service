@@ -1,0 +1,30 @@
+{
+  "name": "customer-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.coffee",
+  "scripts": {
+    "start": "coffee ./bin/www",
+    "test": "mocha --recursive --compilers coffee:coffee-script/register --watch ./tests/unit/mongodb/*.coffee"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "coffee-script": "^1.12.7",
+    "coffeescript": "^2.3.1",
+    "cookie-parser": "^1.4.3",
+    "debug": "^3.1.0",
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "http-errors": "^1.7.0",
+    "mongodb": "^3.1.3",
+    "mongoose": "^5.2.9",
+    "morgan": "^1.9.0",
+    "pug": "^2.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}

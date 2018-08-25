@@ -1,0 +1,11 @@
+#!/usr/bin/env coffee
+
+# Module dependencies.
+app   = require '../app'
+debug = require('debug')('customer-service:server')
+
+port  = process.env.PORT || 3000
+
+app.listen port
+
+
