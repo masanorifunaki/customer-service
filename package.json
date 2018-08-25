@@ -5,7 +5,7 @@
   "main": "app.coffee",
   "scripts": {
     "start": "coffee ./bin/www",
-    "test": "mocha --recursive --compilers coffee:coffee-script/register --watch ./tests"
+    "test": "mocha --recursive --compilers coffee:coffee-script/register --watch ./tests/unit"
   },
   "author": "",
   "license": "ISC",
