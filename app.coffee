@@ -3,7 +3,9 @@ express      = require('express')
 path         = require('path')
 cookieParser = require('cookie-parser')
 logger       = require('morgan')
+
 app          = express()
+MongoDBUtil  = require('./modules/mongodb/mongodb.module').MongoDBUtil
 
 # view engine setup
 app.set 'views', path.join(__dirname, 'views')
@@ -13,6 +15,8 @@ app.use express.json()
 app.use express.urlencoded(extended: false)
 app.use cookieParser()
 app.use express.static(path.join(__dirname, 'public'))
+
+MongoDBUtil.init()
 
 app.use '/', do ->
   router = express.Router()
