@@ -1,11 +1,13 @@
-createError  = require('http-errors')
-express      = require('express')
-path         = require('path')
-cookieParser = require('cookie-parser')
-logger       = require('morgan')
+createError        = require('http-errors')
+express            = require('express')
+path               = require('path')
+cookieParser       = require('cookie-parser')
+logger             = require('morgan')
 
-app          = express()
-MongoDBUtil  = require('./modules/mongodb/mongodb.module').MongoDBUtil
+app                = express()
+
+MongoDBUtil        = require('./modules/mongodb/mongodb.module').MongoDBUtil
+CustomerController = require('./modules/customer/customer.module')().CustomerController
 
 # view engine setup
 app.set 'views', path.join(__dirname, 'views')
@@ -18,9 +20,12 @@ app.use express.static(path.join(__dirname, 'public'))
 
 MongoDBUtil.init()
 
+app.use '/customers', CustomerController
+
 app.use '/', do ->
   router = express.Router()
   router.use '/', require './routes/index.coffee'
+
   return router
 
 # catch 404 and forward to error handler
