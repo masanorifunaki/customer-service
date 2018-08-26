@@ -65,3 +65,46 @@ describe 'CustomerMiddleware', () =>
       createCustomerPromise.catch (error) =>
         expect(error).to.be.a('object')
         expect(error).to.deep.equal(expectedError)
+
+  describe 'getCustomers', () =>
+    fetchCustomers = ''
+    fetchCustomersPromise = ''
+    expectedCustomers = ''
+    expectedError = ''
+
+    beforeEach () =>
+      fetchCustomers = sinon.stub CustomerService, 'fetchCustomers'
+      req.body = {}
+
+    afterEach () =>
+      fetchCustomers.restore()
+
+    it 'should successfully get all customers', () =>
+      expectedCustomers = CustomerFixture.customers
+
+      fetchCustomersPromise = Promise.resolve expectedCustomers
+      fetchCustomers.returns fetchCustomersPromise
+
+      CustomerMiddleware.getCustomers req, res, next
+
+      sinon.assert.callCount fetchCustomers, 1
+
+      fetchCustomersPromise.then () =>
+        expect(req.response).to.be.a('array')
+        expect(req.response.length).to.equal(expectedCustomers.length)
+        expect(req.response).to.deep.equal(expectedCustomers)
+        sinon.assert.callCount next, 1
+
+    it 'should throw error while getting all customers', () =>
+      expectedError = ErrorFixture.unknownError
+
+      fetchCustomersPromise = Promise.reject expectedError
+      fetchCustomers.returns fetchCustomersPromise
+
+      CustomerMiddleware.getCustomers req, res, next
+
+      sinon.assert.callCount fetchCustomers, 1
+
+      fetchCustomersPromise.catch (error) =>
+        expect(error).to.be.a('object');
+        expect(error).to.deep.equal(expectedError)

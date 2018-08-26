@@ -1,6 +1,7 @@
 chai            = require 'chai'
 expect          = chai.expect
-sinon           = require 'sinon'
+sinon           = require('sinon')
+require 'sinon-mongoose'
 
 mongoose        = require 'mongoose'
 
@@ -54,5 +55,32 @@ describe 'CustomerService', () =>
           CustomerModelMock.verify()
           expect(error).to.deep.equal(expectedError)
 
+  describe 'fetchCustomers', () =>
+    expectedCustomers = ''
+    expectedError = ''
 
+    it 'should successfully fetch all customers', () =>
+      expectedCustomers = CustomerFixture.customers
 
+      CustomerModelMock.expects 'find'
+        .withArgs {}
+        .chain 'exec'
+        .resolves expectedCustomers
+
+      CustomerService.fetchCustomers()
+        .then (data) =>
+          CustomerModelMock.verify()
+          expect(data).to.deep.equal(expectedCustomers)
+
+    it 'should throw error while fetching all customers', () =>
+      expectedError = ErrorFixture.unknownError
+
+      CustomerModelMock.expects 'find'
+        .withArgs {}
+        .chain 'exec'
+        .resolves expectedError
+
+      CustomerService.fetchCustomers()
+        .catch (error) =>
+          CustomerModelMock.verify()
+          expect(error).to.deep.equal(expectedError)
