@@ -84,3 +84,36 @@ describe 'CustomerService', () =>
         .catch (error) =>
           CustomerModelMock.verify()
           expect(error).to.deep.equal(expectedError)
+
+  describe 'fetchCustomerById', () ->
+    expectedFetchedCustomer = ''
+    customerId = ''
+    expectedError = ''
+
+    it 'should successfully fetch the customer by id', () =>
+      expectedFetchedCustomer = CustomerFixture.createdCustomer
+      customerId = expectedFetchedCustomer._id
+
+      CustomerModelMock.expects 'findById'
+        .withArgs customerId
+        .chain 'exec'
+        .resolves expectedFetchedCustomer
+
+      CustomerService.fetchCustomerById customerId
+        .then (data) =>
+          CustomerModelMock.verify()
+          expect(data).to.deep.equal(expectedFetchedCustomer)
+
+    it 'should throw error while fetching all customers', () =>
+      customerId = CustomerFixture.createdCustomer._id
+      expectedError = ErrorFixture.unknownError
+
+      CustomerModelMock.expects 'findById'
+        .withArgs customerId
+        .chain 'exec'
+        .rejects expectedError
+
+      CustomerService.fetchCustomerById(customerId)
+        .catch (error) =>
+          CustomerModelMock.verify()
+          expect(error).to.deep.equal(expectedError)

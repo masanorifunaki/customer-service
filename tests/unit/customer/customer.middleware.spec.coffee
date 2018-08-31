@@ -8,6 +8,7 @@ Promise            = bluebird.Promise
 CustomerModule     = require('../../../modules/customer/customer.module')()
 CustomerMiddleware = CustomerModule.CustomerMiddleware
 CustomerService    = CustomerModule.CustomerService
+CustomerModel      = CustomerModule.CustomerModel
 
 Fixtures           = require '../../fixtures/fixtures'
 CustomerFixture    = Fixtures.CustomerFixture
@@ -18,11 +19,16 @@ res                = ''
 next               = ''
 
 describe 'CustomerMiddleware', () =>
+  CustomerModelMock = ''
 
   beforeEach () =>
     req = httpMocks.createRequest()
     res = httpMocks.createResponse()
     next = sinon.spy()
+    CustomerModelMock = sinon.mock CustomerModel
+
+  afterEach () =>
+    CustomerModelMock.restore()
 
   describe 'addCustomer', () =>
     createCustomer = ''
@@ -108,3 +114,4 @@ describe 'CustomerMiddleware', () =>
       fetchCustomersPromise.catch (error) =>
         expect(error).to.be.a('object');
         expect(error).to.deep.equal(expectedError)
+
