@@ -26,8 +26,17 @@ getCustomers = (req, res, next) ->
     .then(success)
     .catch(failure)
 
+getCustomerById = (req, res, next) =>
+  success = (data) =>
+    req.response = data
+    next()
+
+  CustomerService.fetchCustomerById(req.params.customerId)
+    .then (success)
+
 
 
 module.exports =
   addCustomer: addCustomer
   getCustomers: getCustomers
+  getCustomerById: getCustomerById
